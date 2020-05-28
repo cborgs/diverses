@@ -1,0 +1,131 @@
+---
+title: Varianzzerlegung und $R^2$
+author: Christian Borgs
+date: 28.05.2020
+output: html_document
+---
+```{r setup, include=FALSE}
+library(knitr)
+library(kableExtra)
+library(sjPlot)
+```
+```{r package_options, include=FALSE}
+knitr::opts_knit$set(
+  progress = TRUE, 
+  verbose = TRUE,
+  tidy=TRUE
+  )
+knitr::opts_chunk$set(
+  comment="",
+  tidy=TRUE,
+  tidy.opts=list(width.cutoff=40),
+  size = "small"
+  )
+```
+
+
+
+# Data
+
+```{r}
+n <- 10
+
+
+set.seed(42)
+x <- runif(n)
+y <- x
+y[2:5] <- runif(4)
+```
+
+Daten:
+```{r}
+head(data.frame(x,y),10)
+```
+
+Plot:
+
+```{r}
+plot(x,y)
+abline(lm(y~x))
+```
+
+# R squared
+```{r}
+summary(lm(y ~ x))
+summary(lm(y ~ x))$r.squared
+
+# Quadriertes Pearson R
+cor(y,x)^2
+```
+
+
+# Händisches berechnen
+
+$\hat{y}$ aus der Regression vorhersagen:
+```{r}
+yHat <- predict(lm(y ~ x))
+```
+
+Varianz berechnen: per Hand und mit `var()`:
+
+```{r}
+sum((y - mean(y))^2)/(n-1)
+
+var(y)
+```
+
+## Formeln
+
+
+$$
+\text{Gesamtvarianz} = \frac{\sum (y_{i}-\bar{y})^{2}}{n-1}
+$$
+
+$$
+\text{Erklärte Varianz} = \frac{\sum (\hat{y}_{i} - \bar{y})^{2}}{n-1}
+$$
+
+$$
+\text{Nicht erklärte Varianz} = \frac{\sum (y_{i}-\hat{y}_{i})^{2}}{n-1}
+$$
+
+
+Determinationskoeffizient $R^2$:
+
+$$
+\begin{equation*}
+\text{R}^2 = \frac{\text{Erklärte Varianz}}{\text{Gesamtvarianz}}
+\end{equation*}
+$$
+
+## Varianzzerlegung
+
+Erklärte Varianz:
+
+```{r}
+expl <- sum((yHat - mean(y))^2)/(n-1)
+```
+
+Nicht erklärte Varianz:
+
+```{r}
+unexpl <- sum((y - yHat)^2)/(n-1)
+```
+
+Erklärte Varianz + nicht erklärte Varianz sollte die Gesamtvarianz ergeben
+
+```{r}
+expl + unexpl
+var(y)
+```
+
+$R^2$ ergibt sich als Anteil der erklärten durch die Gesamtvarianz:
+```{r}
+expl/var(y)
+```
+
+Ist gleich:
+```{r}
+summary(lm(y ~ x))$r.squared
+cor(y,x)^2
+```
