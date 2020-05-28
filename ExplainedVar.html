@@ -441,6 +441,7 @@ cor(y, x)^2</code></pre>
 <p><span class="math display">\[
 \text{Nicht erklärte Varianz} = \frac{\sum (y_{i}-\hat{y}_{i})^{2}}{n-1}
 \]</span></p>
+<hr />
 <p>Determinationskoeffizient <span class="math inline">\(R^2\)</span>:</p>
 <p><span class="math display">\[
 \begin{equation*}
@@ -468,6 +469,24 @@ cor(y, x)^2</code></pre>
 <pre class="r"><code>cor(y, x)^2</code></pre>
 <pre><code>[1] 0.2906196</code></pre>
 </div>
+</div>
+<div id="ohne-division-durch-n-1" class="section level1">
+<h1>Ohne Division durch n-1</h1>
+<p>Erklärte Varianz ohne <span class="math inline">\(n-1\)</span>:</p>
+<pre class="r"><code>expl &lt;- sum((yHat - mean(y))^2)</code></pre>
+<p>Nicht erklärte Varianz ohne <span class="math inline">\(n-1\)</span>:</p>
+<pre class="r"><code>unexpl &lt;- sum((y - yHat)^2)</code></pre>
+<p>Erklärte Varianz + nicht erklärte Varianz sollte die Gesamtvarianz ergeben</p>
+<pre class="r"><code>expl + unexpl</code></pre>
+<pre><code>[1] 0.6201698</code></pre>
+<pre class="r"><code>var(y)</code></pre>
+<pre><code>[1] 0.06890775</code></pre>
+<p>Tut sie nicht.</p>
+<hr />
+<p><span class="math inline">\(R^2\)</span> ergibt sich als Anteil der erklärten durch die Gesamtvarianz:</p>
+<pre class="r"><code>expl/(expl + unexpl)</code></pre>
+<pre><code>[1] 0.2906196</code></pre>
+<p>Hier haut es hin. <span class="math inline">\(R^2\)</span> lässt sich so berechnen, die tatsächliche erklärte/nicht erklärte Varianz wird aber nicht die Gesamtvarianz ergeben.</p>
 </div>
 
 

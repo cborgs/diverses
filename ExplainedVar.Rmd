@@ -89,6 +89,7 @@ $$
 \text{Nicht erklärte Varianz} = \frac{\sum (y_{i}-\hat{y}_{i})^{2}}{n-1}
 $$
 
+****
 
 Determinationskoeffizient $R^2$:
 
@@ -129,3 +130,39 @@ Ist gleich:
 summary(lm(y ~ x))$r.squared
 cor(y,x)^2
 ```
+
+
+# Ohne Division durch n-1
+
+Erklärte Varianz ohne $n-1$:
+
+```{r}
+expl <- sum((yHat - mean(y))^2)
+```
+
+Nicht erklärte Varianz ohne $n-1$:
+
+```{r}
+unexpl <- sum((y - yHat)^2)
+```
+
+Erklärte Varianz + nicht erklärte Varianz sollte die Gesamtvarianz ergeben
+
+```{r}
+expl + unexpl
+var(y)
+```
+
+Tut sie nicht.
+
+****
+
+$R^2$ ergibt sich als Anteil der erklärten durch die Gesamtvarianz:
+```{r}
+expl/(expl + unexpl)
+```
+
+Hier haut es hin. $R^2$ lässt sich so berechnen, die tatsächliche erklärte/nicht erklärte Varianz wird aber nicht die Gesamtvarianz ergeben.
+
+
+
